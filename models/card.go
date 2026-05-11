@@ -15,5 +15,6 @@ type Card struct {
 	Description string
 	DueDate     *time.Time
 	Priority    string
-	Labels      []Label `gorm:"many2many:card_labels;"`
+	Labels      []Label   `gorm:"many2many:card_labels;"`
+	SubCards    []SubCard `gorm:"foreignKey:CardID"`
 }

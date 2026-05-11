@@ -60,6 +60,7 @@ func GetBoard(c *gin.Context) {
 			return db.Order("position asc")
 		}).
 		Preload("Cards.Labels").
+		Preload("Cards.SubCards").
 		First(&board, id)
 	c.JSON(http.StatusOK, board)
 }
