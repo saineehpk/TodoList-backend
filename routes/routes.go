@@ -54,6 +54,13 @@ func SetupRoutes() *gin.Engine {
 				cards.DELETE("/:id", handlers.DeleteCard)
 				cards.POST("/:id/labels/:labelId", handlers.AttachLabel)
 				cards.DELETE("/:id/labels/:labelId", handlers.DetachLabel)
+				cards.POST("/:id/subcards", handlers.CreateSubCard)
+			}
+
+			subcards := protected.Group("/subcards")
+			{
+				subcards.PATCH("/:id", handlers.UpdateSubCard)
+				subcards.DELETE("/:id", handlers.DeleteSubCard)
 			}
 
 			labels := protected.Group("/labels")

@@ -121,7 +121,7 @@ func UpdateCard(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	updates := map[string]interface{}{}
+	updates := map[string]any{}
 	if input.Title != nil {
 		updates["title"] = *input.Title
 	}
@@ -135,7 +135,7 @@ func UpdateCard(c *gin.Context) {
 		updates["due_date"] = *input.DueDate
 	}
 	database.DB.Model(card).Updates(updates)
-	database.DB.Preload("Labels").First(card, card.ID)
+	database.DB.Preload("Labels").Preload("SubCards").First(card, card.ID)
 	c.JSON(http.StatusOK, card)
 }
 
@@ -170,7 +170,7 @@ func MoveCard(c *gin.Context) {
 			card.BoardID, input.Column, input.Position, card.ID).
 		UpdateColumn("position", clause.Expr{SQL: "position + 1"})
 
-	database.DB.Model(card).Updates(map[string]interface{}{
+	database.DB.Model(card).Updates(map[string]any{
 		"column":   input.Column,
 		"position": input.Position,
 	})
